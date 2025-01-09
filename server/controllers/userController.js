@@ -107,4 +107,41 @@ const loginController = async (req, res) => {
   }
 };
 
-module.exports = { registerController, loginController };
+//update user credentials
+const updateUserController = async (req, res) => {
+  try {
+    //get updated data from request body
+    const { name, password, email } = req.body;
+    //validate password from client side
+    if (password && password.length < 6) {
+      return res.status(400).send({
+        success: false,
+        message: "Password required and minimum6 character long",
+      });
+    }
+    //find user from databae with the help of email
+    const user = await userModel.findOne({ email });
+    //Hash the password from request body..undefined means do not do any changes
+    const hashedPassword = password ? await hashPassword(password) : undefined;
+    //updated user
+    const updatedUser = await userModel.findOneAndUpdate(
+      { email },
+      { name: name || user.name, password: hashedPassword || user.password },
+      { new: true }
+    );
+    updatedUser.password = undefined;
+    //send responce
+    res.status(200).send({
+      success: true,
+      message: "Profile updated please login",
+      updatedUser,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({
+      success: false,
+      message: error,
+    });
+  }
+};
+module.exports = { registerController, loginController, updateUserController };
