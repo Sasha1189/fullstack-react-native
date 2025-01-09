@@ -1,5 +1,6 @@
 const express = require("express");
 const {
+  requireSingIn,
   registerController,
   loginController,
   updateUserController,
@@ -16,7 +17,7 @@ router.post("/register", registerController);
 router.post("/login", loginController);
 
 //UPDATE || PUT
-router.put("/update-user", updateUserController);
+router.put("/update-user", requireSingIn, updateUserController);
 
 //export
 module.exports = router;
