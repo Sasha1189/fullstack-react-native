@@ -6,18 +6,20 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { PostContext } from "../context/postContext";
 import FooterMenu from "../components/Menus/FooterMenu";
 import axios from "axios";
 
-const Post = () => {
+const Post = ({ navigation }) => {
+  // global state
+  const [posts, setPosts] = useContext(PostContext);
   //local state
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   //handle form data post Data
-  const handlePost = async ({ navigation }) => {
-    // alert(`your post title ${title} and ${description}`);
+  const handlePost = async () => {
     try {
       setLoading(true);
       if (!title) {
@@ -31,6 +33,7 @@ const Post = () => {
         description,
       });
       setLoading(false);
+      setPosts([...posts, data?.post]);
       alert(data?.message);
       navigation.navigate("Home");
     } catch (error) {
