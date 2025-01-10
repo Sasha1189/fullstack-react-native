@@ -15,7 +15,7 @@ const PostCard = ({ posts }) => {
           <View style={styles.footer}>
             <Text>
               <FontAwesome5 name="user" color={"orange"} />
-              {post?.createdBy?.name}
+              {post?.postedBy?.name}
             </Text>
             <Text>
               <FontAwesome5 name="clock" color={"orange"} />

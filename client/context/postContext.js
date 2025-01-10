@@ -7,6 +7,7 @@ const PostProvider = ({ children }) => {
   //state
   const [loading, setLoading] = useState(false);
   const [posts, setPosts] = useState([]);
+
   // to get all posts
   const getAllPosts = async () => {
     setLoading(true);
