@@ -4,10 +4,13 @@ import FontAwesome5 from "react-native-vector-icons/FontAwesome5";
 import moment from "moment";
 import axios from "axios";
 import { useNavigation } from "@react-navigation/native";
+import EditModal from "./EditModal";
 
 const PostCard = ({ posts, myPostScreen }) => {
   const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
+  const [modalVisible, setModalVisible] = useState(false);
+  const [post, setPost] = useState({});
   //handle delete prompt
   const handleDeletePrompt = (id) => {
     Alert.alert("Attention!", "Sure delete post?", [
@@ -41,22 +44,48 @@ const PostCard = ({ posts, myPostScreen }) => {
   return (
     <View>
       <Text style={styles.heading}>Total Posts: {posts?.length}</Text>
+      {myPostScreen && (
+        <EditModal
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+          post={post}
+        />
+      )}
       {posts.map((post, index) => (
         <View style={styles.card} key={index}>
           {myPostScreen && (
-            <View style={{ textAlign: "right" }}>
-              <Text style={{ textAlign: "right" }}>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "flex-end",
+                borderWidth: 1,
+                borderColor: "#ffffff",
+              }}
+            >
+              <Text style={{ marginHorizontal: 30 }}>
+                <FontAwesome5
+                  name="pen"
+                  size={16}
+                  color={"darkblue"}
+                  onPress={() => {
+                    setPost(post), setModalVisible(true);
+                  }}
+                />
+              </Text>
+              <Text>
                 <FontAwesome5
                   name="trash"
-                  size={14}
+                  size={16}
                   color={"red"}
                   onPress={() => handleDeletePrompt(post?._id)}
                 />
               </Text>
             </View>
           )}
-          <Text style={styles.title}>Title : {post?.title}</Text>
-          <Text style={styles.desc}>{post?.description}</Text>
+          <View>
+            <Text style={styles.title}>Title : {post?.title}</Text>
+            <Text style={styles.desc}>{post?.description}</Text>
+          </View>
           <View style={styles.footer}>
             <Text>
               <FontAwesome5 name="user" color={"orange"} />
