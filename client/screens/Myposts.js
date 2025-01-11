@@ -27,11 +27,10 @@ const Myposts = () => {
   useEffect(() => {
     getUserPosts();
   }, []);
-  console.log(posts);
   return (
     <View style={styles.container}>
       <ScrollView>
-        <PostCard posts={posts} />
+        <PostCard posts={posts} myPostScreen={true} />
       </ScrollView>
       <View style={{ backgroundColor: "#ffffff" }}>
         <FooterMenu />
