@@ -34,7 +34,7 @@ const PostCard = ({ posts, myPostScreen }) => {
       const { data } = await axios.delete(`/post/delete-post/${id}`);
       setLoading(false);
       alert(data?.message);
-      navigation.navigate("Home");
+      navigation.push("Myposts");
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -88,11 +88,19 @@ const PostCard = ({ posts, myPostScreen }) => {
           </View>
           <View style={styles.footer}>
             <Text>
-              <FontAwesome5 name="user" color={"orange"} />
+              <FontAwesome5
+                name="user"
+                color={"orange"}
+                style={{ marginHorizontal: 10 }}
+              />
               {post?.postedBy?.name}
             </Text>
             <Text>
-              <FontAwesome5 name="clock" color={"orange"} />
+              <FontAwesome5
+                name="clock"
+                color={"orange"}
+                style={{ marginHorizontal: 10 }}
+              />
               {moment(post?.createdAt).format("DD:MM:YYYY")}
             </Text>
           </View>

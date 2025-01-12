@@ -9,11 +9,31 @@ import {
   TextInput,
 } from "react-native";
 import { SafeAreaView, SafeAreaProvider } from "react-native-safe-area-context";
+import axios from "axios";
+import { useNavigation } from "@react-navigation/native";
 
 const EditModal = ({ modalVisible, setModalVisible, post }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigation = useNavigation();
 
+  //handle update post
+  const updatePostHandler = async (id) => {
+    try {
+      setLoading(true);
+      const { data } = await axios.put(`/post/update-post/${id}`, {
+        title,
+        description,
+      });
+      setLoading(false);
+      alert(data?.message);
+      navigation.push("Myposts");
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
   //initial post data
   useEffect(() => {
     setTitle(post?.title);
@@ -51,9 +71,14 @@ const EditModal = ({ modalVisible, setModalVisible, post }) => {
               <View style={styles.btnContainer}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
+                  onPress={() => {
+                    updatePostHandler(post && post._id),
+                      setModalVisible(!modalVisible);
+                  }}
                 >
-                  <Text style={styles.textStyle}>UPDATE</Text>
+                  <Text style={styles.textStyle}>
+                    {loading ? "Please wait" : "UPDATE"}
+                  </Text>
                 </Pressable>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
@@ -92,7 +117,7 @@ const styles = StyleSheet.create({
   },
   inputBox: {
     marginBottom: 20,
-    backgroundColor: "light gray",
+    backgroundColor: "lightgray",
     borderRadius: 10,
     marginTop: 10,
     paddingLeft: 10,

@@ -5,6 +5,7 @@ const {
   getAllPostController,
   getUserPostsController,
   deletePostController,
+  updatePostController,
 } = require("../controllers/postController");
 
 //router object
@@ -21,6 +22,9 @@ router.get("/get-user-post", requireSingIn, getUserPostsController);
 
 // DELETE POST || use DELETE method
 router.delete("/delete-post/:id", requireSingIn, deletePostController);
+
+// UPDATE POST || use PUT method
+router.put("/update-post/:id", requireSingIn, updatePostController);
 
 //export
 module.exports = router;
